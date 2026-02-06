@@ -1,4 +1,4 @@
-# Laravel for Zed
+# Laravel Idea for Zed
 
 Full-featured Laravel development extension for [Zed](https://zed.dev). Provides intelligent autocomplete, go-to-definition, diagnostics, and code generation for Laravel projects.
 
