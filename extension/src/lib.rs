@@ -22,32 +22,39 @@ impl LaravelExtension {
         Ok(server_path)
     }
 
-    /// Install the LSP server via npm
+    /// Install or locate the LSP server
     fn install_server(&self, language_server_id: &LanguageServerId) -> Result<String> {
         zed::set_language_server_installation_status(
             language_server_id,
             &zed::LanguageServerInstallationStatus::CheckingForUpdate,
         );
 
-        let server_dir = "node_modules/laravel-language-server";
-        let server_entry = format!("{server_dir}/dist/server.js");
-
-        // Check if already installed
-        if fs::metadata(&server_entry).is_ok() {
+        // 1. Check bundled server (shipped with the extension release)
+        let bundled_entry = "server/dist/server.js";
+        if fs::metadata(bundled_entry).is_ok() {
             zed::set_language_server_installation_status(
                 language_server_id,
                 &zed::LanguageServerInstallationStatus::None,
             );
-            return Ok(server_entry);
+            return Ok(bundled_entry.to_string());
         }
 
+        // 2. Check npm-installed server
+        let npm_entry = "node_modules/laravel-language-server/dist/server.js";
+        if fs::metadata(npm_entry).is_ok() {
+            zed::set_language_server_installation_status(
+                language_server_id,
+                &zed::LanguageServerInstallationStatus::None,
+            );
+            return Ok(npm_entry.to_string());
+        }
+
+        // 3. Install from npm
         zed::set_language_server_installation_status(
             language_server_id,
             &zed::LanguageServerInstallationStatus::Downloading,
         );
 
-        // For development: use the local server directory
-        // In production: install from npm
         let result = zed::npm_install_package("laravel-language-server", "latest");
 
         match result {
@@ -56,7 +63,7 @@ impl LaravelExtension {
                     language_server_id,
                     &zed::LanguageServerInstallationStatus::None,
                 );
-                Ok(server_entry)
+                Ok(npm_entry.to_string())
             }
             Err(e) => {
                 zed::set_language_server_installation_status(

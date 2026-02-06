@@ -4,6 +4,9 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
+# Ensure Cargo/Rust is in PATH
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+
 echo "=== Building Laravel Language Server ==="
 
 # Build TypeScript server
