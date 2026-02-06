@@ -5,7 +5,8 @@ server/node_modules/
 # Build outputs
 server/dist/
 extension/target/
-package/
+package/laravel-for-zed/server/node_modules/
+*.tar.gz
 
 # IDE
 .idea/
