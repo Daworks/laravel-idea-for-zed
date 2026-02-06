@@ -1,0 +1,27 @@
+id = "laravel"
+name = "Laravel"
+version = "1.0.0"
+schema_version = 1
+authors = ["dhlee"]
+description = "Full-featured Laravel development support for Zed - autocomplete, navigation, diagnostics, and code generation for routes, views, config, Eloquent, Blade, Livewire, Inertia, and more"
+repository = "https://github.com/dhlee/zed-laravel"
+
+[language_servers.laravel-ls]
+name = "Laravel Language Server"
+languages = ["PHP", "Blade"]
+
+[language_servers.laravel-ls.language_ids]
+"PHP" = "php"
+"Blade" = "blade"
+
+[slash_commands.laravel:make]
+description = "Generate Laravel files (model, controller, migration, etc.)"
+requires_argument = false
+
+[slash_commands.laravel:routes]
+description = "Show all registered Laravel routes"
+requires_argument = false
+
+[slash_commands.laravel:migrate]
+description = "Run Laravel database migrations"
+requires_argument = false
